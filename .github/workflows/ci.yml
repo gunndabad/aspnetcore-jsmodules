@@ -44,15 +44,15 @@ jobs:
 
     - name: Test
       run: |
-        dotnet test test/AspNetCoreJsModules.Tests/AspNetCoreJsModules.Tests.csproj --configuration Release --no-build
+        dotnet test test/AspNetCoreJsModules.Tests/AspNetCoreJsModules.Tests.csproj --configuration Release --no-build --logger trx
 
-#    - name: Test report
-#      uses: dorny/test-reporter@v1
-#      if: always()
-#      with:
-#        name: Test results
-#        path: "**/*.trx"
-#        reporter: dotnet-trx
+    - name: Test report
+      uses: dorny/test-reporter@v1
+      if: always()
+      with:
+        name: Test results
+        path: "**/*.trx"
+        reporter: dotnet-trx
 
     - name: Package
       run: dotnet pack src/AspNetCoreJsModules/AspNetCoreJsModules.csproj --configuration Release --no-build
