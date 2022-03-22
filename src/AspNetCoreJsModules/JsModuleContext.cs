@@ -88,7 +88,7 @@ namespace AspNetCoreJsModules
         /// Freezes this <see cref="JsModuleContext"/> to prevent any additional module imports from being added.
         /// </summary>
         /// <exception cref="InvalidOperationException">The <see cref="JsModuleContext"/> has already been frozen.</exception>
-        public void FreezeModuleImports()
+        internal void FreezeModuleImports()
         {
             if (_importsFrozen)
             {
