@@ -24,7 +24,10 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
             var context = new TagHelperContext(
                 tagName: "js-import",
                 allAttributes: new TagHelperAttributeList(),
-                items: new Dictionary<object, object>(),
+                items: new Dictionary<object, object>()
+                {
+                    { typeof(JavascriptModulesTagHelperContext), new JavascriptModulesTagHelperContext() }
+                },
                 uniqueId: "test");
 
             var output = new TagHelperOutput(
@@ -67,7 +70,10 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
             var context = new TagHelperContext(
                 tagName: "js-import",
                 allAttributes: new TagHelperAttributeList(),
-                items: new Dictionary<object, object>(),
+                items: new Dictionary<object, object>()
+                {
+                    { typeof(JavascriptModulesTagHelperContext), new JavascriptModulesTagHelperContext() }
+                },
                 uniqueId: "test");
 
             var output = new TagHelperOutput(
@@ -113,7 +119,10 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
             var context = new TagHelperContext(
                 tagName: "js-import",
                 allAttributes: new TagHelperAttributeList(),
-                items: new Dictionary<object, object>(),
+                items: new Dictionary<object, object>()
+                {
+                    { typeof(JavascriptModulesTagHelperContext), new JavascriptModulesTagHelperContext() }
+                },
                 uniqueId: "test");
 
             var output = new TagHelperOutput(
@@ -160,7 +169,10 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
             var context = new TagHelperContext(
                 tagName: "js-import",
                 allAttributes: new TagHelperAttributeList(),
-                items: new Dictionary<object, object>(),
+                items: new Dictionary<object, object>()
+                {
+                    { typeof(JavascriptModulesTagHelperContext), new JavascriptModulesTagHelperContext() }
+                },
                 uniqueId: "test");
 
             var output = new TagHelperOutput(
@@ -208,7 +220,10 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
             var context = new TagHelperContext(
                 tagName: "js-import",
                 allAttributes: new TagHelperAttributeList(),
-                items: new Dictionary<object, object>(),
+                items: new Dictionary<object, object>()
+                {
+                    { typeof(JavascriptModulesTagHelperContext), new JavascriptModulesTagHelperContext() }
+                },
                 uniqueId: "test");
 
             var output = new TagHelperOutput(
@@ -263,7 +278,10 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
             var context = new TagHelperContext(
                 tagName: "js-import",
                 allAttributes: new TagHelperAttributeList(),
-                items: new Dictionary<object, object>(),
+                items: new Dictionary<object, object>()
+                {
+                    { typeof(JavascriptModulesTagHelperContext), new JavascriptModulesTagHelperContext() }
+                },
                 uniqueId: "test");
 
             var output = new TagHelperOutput(

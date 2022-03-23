@@ -17,6 +17,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,7 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Content\es-module-shims.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.23" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.15" Condition="'$(TargetFramework)' == 'net5.0'" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.3" Condition="'$(TargetFramework)' == 'net6.0'" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="MinVer" Version="2.3.1">
       <PrivateAssets>all</PrivateAssets>

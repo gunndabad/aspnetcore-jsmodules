@@ -14,7 +14,7 @@ namespace AspNetCoreJsModules.TagHelpers
     /// Renders script imports and an import map for registered javascript modules.
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(JavascriptModuleImportTagHelper.TagName)]
+    [RestrictChildren(JavascriptModuleImportTagHelper.TagName, JavascriptModulesShimTagHelper.TagName)]
     public class JavascriptModulesTagHelper : TagHelper
     {
         internal const string TagName = "js-modules";
@@ -45,9 +45,17 @@ namespace AspNetCoreJsModules.TagHelpers
         public ViewContext ViewContext { get; set; } = default!;
 
         /// <inheritdoc/>
+        public override void Init(TagHelperContext context)
+        {
+            var modulesTagHelperContext = new JavascriptModulesTagHelperContext();
+            context.Items.Add(typeof(JavascriptModulesTagHelperContext), modulesTagHelperContext);
+        }
+
+        /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var jsModuleContext = ViewContext.HttpContext.GetJsModuleContext();
+            var modulesTagHelperContext = (JavascriptModulesTagHelperContext)context.Items[typeof(JavascriptModulesTagHelperContext)];
 
             if (jsModuleContext is null)
             {
@@ -67,6 +75,11 @@ namespace AspNetCoreJsModules.TagHelpers
             if (Preload)
             {
                 AppendPreloads(output, jsModuleContext);
+            }
+
+            if (modulesTagHelperContext.ShimPath != null)
+            {
+                AppendShim(output, modulesTagHelperContext);
             }
         }
 
@@ -136,6 +149,16 @@ namespace AspNetCoreJsModules.TagHelpers
                 output.Content.AppendHtml(script);
                 output.Content.AppendHtml("\n");
             }
+        }
+
+        private void AppendShim(TagHelperOutput output, JavascriptModulesTagHelperContext modulesTagHelperContext)
+        {
+            var script = new TagBuilder("script");
+            script.Attributes.Add("async", "async");
+            script.Attributes.Add("src", modulesTagHelperContext.ShimPath);
+
+            output.Content.AppendHtml(script);
+            output.Content.AppendHtml("\n");
         }
     }
 }

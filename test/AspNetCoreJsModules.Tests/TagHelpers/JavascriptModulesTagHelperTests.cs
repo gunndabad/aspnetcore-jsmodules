@@ -42,6 +42,8 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
                 ViewContext = viewContext
             };
 
+            tagHelper.Init(context);
+
             // Act
             var ex = await Record.ExceptionAsync(() => tagHelper.ProcessAsync(context, output));
 
@@ -85,6 +87,8 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
                 Preload = false,
                 ViewContext = viewContext
             };
+
+            tagHelper.Init(context);
 
             // Act
             await tagHelper.ProcessAsync(context, output);
@@ -160,6 +164,8 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
                 ViewContext = viewContext
             };
 
+            tagHelper.Init(context);
+
             // Act
             await tagHelper.ProcessAsync(context, output);
 
@@ -171,6 +177,59 @@ namespace AspNetCoreJsModules.Tests.TagHelpers
                 e => e.Name.Equals("link") &&
                     e.GetAttributeValue("rel", def: "") == "modulepreload" &&
                     e.GetAttributeValue("href", def: "") == "/path/to/my-module.js");
+        }
+
+        [Fact]
+        public async Task ProcessAsync_WithShim_RendersShimScriptReference()
+        {
+            // Arrange
+            var context = new TagHelperContext(
+                tagName: "js-modules",
+                allAttributes: new TagHelperAttributeList(),
+                items: new Dictionary<object, object>(),
+                uniqueId: "test");
+
+            var output = new TagHelperOutput(
+                "js-modules",
+                attributes: new TagHelperAttributeList(),
+                getChildContentAsync: (useCachedResult, encoder) =>
+                {
+                    var ctx = (JavascriptModulesTagHelperContext)context.Items[typeof(JavascriptModulesTagHelperContext)];
+                    ctx.TrySetShimPath("/shim-path.js");
+
+                    var tagHelperContent = new DefaultTagHelperContent();
+                    return Task.FromResult<TagHelperContent>(tagHelperContent);
+                });
+
+            var jsModuleContext = new JsModuleContext();
+            jsModuleContext.AddModuleImport("MyModule", "/path/to/my-module.js");
+
+            var httpContextFeatures = new FeatureCollection();
+            httpContextFeatures.Set(new JsModuleContextFeature(jsModuleContext));
+
+            var viewContext = new ViewContext()
+            {
+                HttpContext = new DefaultHttpContext(httpContextFeatures)
+            };
+
+            var tagHelper = new JavascriptModulesTagHelper()
+            {
+                ViewContext = viewContext
+            };
+
+            tagHelper.Init(context);
+
+            // Act
+            await tagHelper.ProcessAsync(context, output);
+
+            // Assert
+            var elements = output.Content.RenderToElements();
+
+            Assert.Contains(
+                elements,
+                e => e.Name.Equals("script") &&
+                    e.Attributes.Contains("async") &&
+                    e.GetAttributeValue("src", def: "") == "/shim-path.js");
         }
     }
 }
