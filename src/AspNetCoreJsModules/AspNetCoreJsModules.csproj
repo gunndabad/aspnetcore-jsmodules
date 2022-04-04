@@ -15,6 +15,7 @@
     <MinVerMinimumMajorMinor>0.1</MinVerMinimumMajorMinor>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
@@ -32,6 +33,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Include="..\..\README.md" Link="README.md" Pack="true" PackagePath="\" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.23" Condition="'$(TargetFramework)' == 'netcoreapp3.1'" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="5.0.15" Condition="'$(TargetFramework)' == 'net5.0'" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.3" Condition="'$(TargetFramework)' == 'net6.0'" />
